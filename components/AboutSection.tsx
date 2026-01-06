@@ -50,7 +50,7 @@ const AboutSection: React.FC = () => {
                 <span className="text-yellow-500 font-bold uppercase tracking-widest text-sm">Seja Membro Oficial</span>
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-black uppercase leading-tight mb-6 text-white drop-shadow-sm">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase leading-tight mb-6 text-white drop-shadow-sm">
               Faça parte do nosso time <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700">a partir de R$1,99</span>
             </h2>
@@ -129,8 +129,8 @@ const AboutSection: React.FC = () => {
                     </div>
 
                     <div className="space-y-1">
-                        <div className="text-xs text-gray-500 font-bold uppercase tracking-widest">Nº DO CARTÃO</div>
-                        <div className="font-mono text-xl text-white tracking-widest drop-shadow-md">8192 0021 9382 1092</div>
+                        <div className="text-xs text-gray-500 font-bold uppercase tracking-widest">NÚMERO DE MEMBRO</div>
+                        <div className="font-mono text-3xl text-white tracking-widest drop-shadow-md">#001</div>
                     </div>
                 </div>
 

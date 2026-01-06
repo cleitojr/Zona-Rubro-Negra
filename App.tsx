@@ -8,20 +8,23 @@ import TeamSection from './components/TeamSection';
 import PartnersSection from './components/PartnersSection';
 import CTASection from './components/CTASection';
 import Footer from './components/Footer';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <div className="bg-[#050505] min-h-screen text-white font-sans selection:bg-red-600 selection:text-white">
-      <Header />
-      <Hero />
-      <NotificationBar />
-      <LatestVideos />
-      <AboutSection />
-      <TeamSection />
-      <PartnersSection />
-      <CTASection />
-      <Footer />
-    </div>
+    <AuthProvider>
+        <div className="bg-[#050505] min-h-screen text-white font-sans selection:bg-red-600 selection:text-white">
+        <Header />
+        <Hero />
+        <NotificationBar />
+        <LatestVideos />
+        <AboutSection />
+        <TeamSection />
+        <PartnersSection />
+        <CTASection />
+        <Footer />
+        </div>
+    </AuthProvider>
   );
 }
 

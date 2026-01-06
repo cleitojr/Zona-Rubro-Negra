@@ -46,21 +46,21 @@ export const PARTNERS: Partner[] = [
   { 
     id: '1', 
     name: 'CENTAURO', 
-    description: 'Artigos esportivos oficiais', 
+    description: 'Ganhe 10% de desconto em produtos vendidos e entregues pela Centauro.', 
     coupon: 'ZRN10',
     link: 'https://click.centauro.com.br/13Nl/2cfgu4pm' 
   },
   { 
     id: '2', 
     name: 'GOCASE', 
-    description: 'Acessórios personalizados', 
+    description: 'Garanta um desconto exclusivo em compras acima de R$99!', 
     coupon: 'ZONARUBRONEGRA',
     link: 'https://www.gocase.com.br' 
   },
   { 
     id: '3', 
     name: 'MANUAL', 
-    description: 'Saúde masculina', 
+    description: 'Ganhe 40% de desconto + frete grátis na sua primeira compra utilizando o cupom.', 
     coupon: 'ZONARUBRONEGRA',
     link: 'https://www.manual.com.br' 
   },

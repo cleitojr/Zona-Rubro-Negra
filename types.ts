@@ -27,3 +27,16 @@ export interface NavItem {
   label: string;
   href: string;
 }
+
+export interface UserProfile {
+  id: string;
+  full_name: string | null;
+  email: string | null;
+  phone?: string | null;
+  role: 'admin' | 'member' | 'user';
+  membership_tier: 'free' | 'bronze' | 'prata' | 'ouro' | 'diamante';
+  youtube_connected: boolean;
+  youtube_channel?: string;
+  avatar_url?: string;
+  created_at?: string;
+}

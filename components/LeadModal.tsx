@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Lock, User, ArrowRight, CheckCircle, Phone, Youtube } from 'lucide-react';
+import { X, Mail, Lock, User, ArrowRight, CheckCircle, Phone, Youtube, AlertCircle } from 'lucide-react';
+import { supabase } from '../lib/supabaseClient';
 
 interface LeadModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
   const [mode, setMode] = useState<AuthMode>('login');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Form states
   const [name, setName] = useState('');
@@ -20,13 +22,34 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
-    // Simula requisição de login/cadastro
-    setTimeout(() => {
-      setLoading(false);
+    setErrorMessage(null);
+
+    try {
+      if (mode === 'signup') {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              full_name: name,
+              phone: phone,
+            },
+          },
+        });
+        if (error) throw error;
+        // Para signup, geralmente o supabase pede confirmação de email por padrão
+        // Se desativar confirmação no painel, ele loga direto.
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (error) throw error;
+      }
+
       setSuccess(true);
       
       setTimeout(() => {
@@ -38,25 +61,44 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
         setEmail('');
         setPassword('');
         setMode('login');
-      }, 1500);
-    }, 1500);
+      }, 2000);
+
+    } catch (error: any) {
+      console.error('Auth Error:', error);
+      // Tratamento básico de erro para o usuário (ex: chaves inválidas ou senha errada)
+      if (error.message?.includes('FetchError') || error.message?.includes('invalid claim')) {
+         setErrorMessage("Erro de configuração: Verifique as chaves do Supabase no código.");
+      } else {
+         setErrorMessage(error.message || "Ocorreu um erro ao tentar entrar.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSocialLogin = () => {
+  const handleSocialLogin = async () => {
     setLoading(true);
-    setTimeout(() => {
+    setErrorMessage(null);
+    try {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: window.location.origin, // Redireciona de volta para o site após login
+            }
+        });
+        if (error) throw error;
+        // O redirecionamento acontece aqui, então não precisamos setar loading false manualmente
+    } catch (error: any) {
+        console.error('Social Auth Error:', error);
+        setErrorMessage(error.message || "Erro ao conectar com Google.");
         setLoading(false);
-        setSuccess(true);
-        setTimeout(() => {
-            setSuccess(false);
-            onClose();
-        }, 1500);
-    }, 1000);
+    }
   };
 
   const toggleMode = () => {
     setMode(mode === 'login' ? 'signup' : 'login');
     setSuccess(false);
+    setErrorMessage(null);
   };
 
   return (
@@ -104,9 +146,13 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
                         <CheckCircle size={48} />
                         </motion.div>
                         <h3 className="text-2xl font-black text-white mb-2">
-                        {mode === 'login' ? 'Bem-vindo de volta!' : 'Conta criada!'}
+                        {mode === 'login' ? 'Bem-vindo de volta!' : 'Conta criada com sucesso!'}
                         </h3>
-                        <p className="text-gray-400">Redirecionando para a área exclusiva...</p>
+                        <p className="text-gray-400">
+                             {mode === 'signup' 
+                                ? 'Verifique seu e-mail para confirmar o cadastro.' 
+                                : 'Redirecionando para a área exclusiva...'}
+                        </p>
                     </div>
                     ) : (
                     <>
@@ -125,6 +171,13 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose }) => {
                             : 'Junte-se à maior comunidade rubro-negra.'}
                         </p>
                         </div>
+
+                        {errorMessage && (
+                            <div className="mb-6 bg-red-900/20 border border-red-600/50 text-red-200 p-3 rounded-lg text-xs flex items-center gap-2">
+                                <AlertCircle size={16} className="text-red-500 shrink-0" />
+                                <span>{errorMessage}</span>
+                            </div>
+                        )}
 
                         {/* Social Login */}
                         <button 
