@@ -13,31 +13,49 @@ const Hero: React.FC = () => {
 
   return (
     <section id="home" className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-black">
-      {/* Background Image with Overlay - Flag Effect */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <motion.img 
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1.05 }}
+      {/* Background - The Red & Black Flag */}
+      <div className="absolute inset-0 z-0 overflow-hidden bg-[#050505]">
+        {/* The Stripes (Flag Pattern) */}
+        <motion.div 
+          initial={{ scale: 1.1, rotate: -2 }}
+          animate={{ 
+            scale: 1.2,
+            rotate: 1,
+            x: [-15, 0, -15],
+            y: [-10, 10, -10]
+          }}
           transition={{ 
-            duration: 20, 
+            duration: 18, 
             repeat: Infinity, 
-            repeatType: "reverse", 
+            repeatType: "mirror", 
             ease: "easeInOut" 
           }}
-          src="https://images.unsplash.com/photo-1532186651327-6ac23687d189?q=80&w=2069&auto=format&fit=crop" 
-          alt="Bandeira Rubro-Negra tremulando" 
-          className="w-full h-full object-cover opacity-70"
-        />
+          className="absolute inset-0 w-[140%] h-[140%] -top-[20%] -left-[20%] origin-center"
+          style={{
+            backgroundImage: `repeating-linear-gradient(
+                180deg,
+                #080808 0%,
+                #080808 12%,
+                #991B1B 12%,
+                #991B1B 24%
+            )`
+          }}
+        >
+             {/* Gradient Overlay to simulate fabric folds/waves */}
+             <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-transparent to-black/40 mix-blend-multiply"></div>
+             <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-black/20 to-black/60 mix-blend-multiply"></div>
+        </motion.div>
         
-        {/* Gradient Overlays for the "Rubro-Negra" aesthetic and text readability */}
-        {/* 1. Heavy bottom fade to blend with next section */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/20 to-[#050505]"></div>
-        
-        {/* 2. Side vignettes to focus attention on center */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80"></div>
-        
-        {/* 3. Red tint to enhance the flag color */}
-        <div className="absolute inset-0 bg-red-900/20 mix-blend-overlay"></div>
+        {/* Noise Texture for Realism (Fabric feel) */}
+        <div className="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none" 
+             style={{ 
+                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")` 
+             }}
+        ></div>
+
+        {/* Cinematic Vignettes for focus */}
+        <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/30 to-black/95"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-[#050505]"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10 text-center flex flex-col items-center">
@@ -49,7 +67,7 @@ const Hero: React.FC = () => {
           className="text-5xl md:text-7xl lg:text-9xl font-black uppercase tracking-tighter leading-none mb-6 drop-shadow-2xl"
         >
           <span className="text-white">Zona </span>
-          <span className="text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-800 filter drop-shadow-lg">
+          <span className="text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-800 filter drop-shadow-[0_2px_10px_rgba(220,38,38,0.5)]">
             Rubro
           </span>
           <br />
@@ -60,7 +78,7 @@ const Hero: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="text-gray-200 italic text-lg md:text-xl mb-12 font-medium drop-shadow-md"
+          className="text-gray-200 italic text-lg md:text-xl mb-12 font-medium drop-shadow-md bg-black/30 backdrop-blur-sm px-6 py-2 rounded-full border border-white/5 inline-block"
         >
           "De rubro-negros para rubro-negros"
         </motion.p>
@@ -84,7 +102,7 @@ const Hero: React.FC = () => {
           </motion.a>
 
           {/* Real Time Counter Next to Button */}
-          <div className="flex items-center gap-4 bg-black/40 backdrop-blur-md px-6 py-3 rounded-lg border border-white/10 group hover:border-red-600/30 transition-colors min-w-[260px] md:min-w-0 justify-between md:justify-start">
+          <div className="flex items-center gap-4 bg-black/60 backdrop-blur-md px-6 py-3 rounded-lg border border-white/10 group hover:border-red-600/30 transition-colors min-w-[260px] md:min-w-0 justify-between md:justify-start">
               <div className="flex flex-col items-start">
                   <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none mb-1">Somos</p>
                   <motion.span className="text-2xl font-black text-white tabular-nums leading-none">
